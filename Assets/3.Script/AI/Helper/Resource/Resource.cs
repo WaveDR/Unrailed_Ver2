@@ -5,17 +5,12 @@ using System.Linq;
 
 public class Resource : MonoBehaviour
 {
-    public bool NonethisResourceType { get; private set; } = false;
+    public bool NonethisResourceTypeHelper { get; private set; } = false;
+    public bool NonethisResourceTypeEnemy { get; private set; } = false;
 
     private WorldResource.EType _defaultResource = WorldResource.EType.Wood;
     private Dictionary<WorldResource.EType, List<WorldResource>> _trackedResources = null;
-    private float _range = 30f;
-
-    public void SetHome(BaseAI robot)
-    {
-        robot.SetHome(this);
-    }
-
+    private float _range = 20;
 
     private void Start()
     {
@@ -30,7 +25,7 @@ public class Resource : MonoBehaviour
         }
     }
 
-    private void PopulateResources()
+    public void PopulateResources()
     {
         //자원 세팅
         var resourceTypes = System.Enum.GetValues(typeof(WorldResource.EType));
@@ -39,7 +34,6 @@ public class Resource : MonoBehaviour
         {
             var type = (WorldResource.EType)value;
             _trackedResources[type] = ResourceTracker.Instance.GetResourcesInRange(type, transform.position, _range);
-            //총 자원수
         }
     }
 
@@ -63,11 +57,11 @@ public class Resource : MonoBehaviour
         //자원이 있는지 확인
         if (_trackedResources[targetResource].Count <1)
         {
-            NonethisResourceType = true;
+            NonethisResourceTypeHelper = true;
             Debug.Log($"{targetResource} :  자원이 이제 없어요");
         }
         else
-            NonethisResourceType = false;
+            NonethisResourceTypeHelper = false;
 
         var sortedResources = _trackedResources[targetResource]
             //갈 수 있는 곳에 있는 자원만 추리기
@@ -90,11 +84,11 @@ public class Resource : MonoBehaviour
         //자원이 있는지 확인
         if (_trackedResources[targetResource].Count < 1)
         {
-            NonethisResourceType = true;
+            NonethisResourceTypeEnemy = true;
             Debug.Log($"{targetResource} :  훔칠 자원이 이제 없어요");
         }
         else
-            NonethisResourceType = false;
+            NonethisResourceTypeEnemy = false;
 
         var sortedResources = _trackedResources[targetResource]
             //갈 수 있는 곳에 있는 자원만 추리기
@@ -108,41 +102,35 @@ public class Resource : MonoBehaviour
     }
 
 
-    public bool dd(PathFindingAgent brain)
+
+    public WorldResource ResearchTarget(Helper brain)
     {
-        //자원 업데이트
-        PopulateResources();
-        WorldResource.EType targetResource = WorldResource.EType.Resource;
+        //갈 수 있는 곳이 없다면 실행
+        WorldResource.EType targetResource = _defaultResource;
         var resourceTypes = System.Enum.GetValues(typeof(WorldResource.EType));
 
+        foreach (var typeValue in resourceTypes)
+        {
+            var resourceType = (WorldResource.EType)typeValue;
+            //명령이랑 같은지 확인
+            if (resourceType == brain.TargetResource)
+            {
+                targetResource = resourceType;
+                break;
+            }
+        }
         //자원이 있는지 확인
-        if (_trackedResources[targetResource].Count < 1)
-        {
-            Debug.Log($"{targetResource} :  자원이 이제 없어요");
-            return false;
-        }
-
+        
         var sortedResources = _trackedResources[targetResource]
-            //갈 수 있는 곳에 있는 자원만 추리기
-            .Where(resource => Vector3.Distance(resource.transform.position, brain.
-                                                FindCloestAroundEndPosition(resource.transform.position)) <= 1.5f)
-            //가까운 순으로 정렬
             .OrderBy(resource => Vector3.Distance(brain.transform.position, resource.transform.position))
+            .Take(20)
+            .Where(resource => Vector3.Distance
+            (brain.Agent.FindCloestAroundEndPosition(resource.transform.position), resource.transform.position)<1.5f)
+            .Where(resource=> brain.Agent.MoveTo(brain.Agent.FindCloestAroundEndPosition(resource.transform.position)))
             //가장 가까운 자원 반환
-            .ToList();
+            .FirstOrDefault();
 
-        if(sortedResources[0].GetComponent<AI_StackItem>().IItemType==
-            sortedResources[1].GetComponent<AI_StackItem>().IItemType)
-        {
-
-            Debug.Log("같아요");
-            return true;
-        }
-
-        return false;
+        return sortedResources;
     }
-
-
-
 
 }

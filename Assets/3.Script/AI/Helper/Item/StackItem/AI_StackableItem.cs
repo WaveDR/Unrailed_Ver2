@@ -11,114 +11,22 @@ public class AI_StackableItem : AI_StackItem
         // 종류가 같다면 줍는다.
         if (handItem.Peek().CheckItemType(detectedItem.Peek()))
         {
+            HelperCheckItemType = false;
             while (handItem.Count < 3)
             {
                 if (detectedItem.Count == 0)
                     break;
 
                 handItem.Push(detectedItem.Pop());
-                handItem.Peek().RePosition(_ai.TwoHandTransform, Vector3.up * (handItem.Count) * stackInterval);
+                handItem.Peek().RePosition(_aiHelper.TwoHandTransform, Vector3.up * (handItem.Count) * stackInterval);
             }
         }
 
         else
         {
             //아니라면 손에 있는걸 갖다놓고 다시 와야함
-
-            Debug.Log("타입이 달라요");
-/*            if (handItem.Count <= 3 && detectedItem.Count <= 3)
-            {
-                Stack<AI_StackItem> temp = new Stack<AI_StackItem>(handItem);
-                _aiStack.PutDown();
-
-                while (detectedItem.Count != 0)
-                {
-                    handItem.Push(detectedItem.Pop());
-                    handItem.Peek().RePosition(_ai.TwoHandTransform, Vector3.up * (handItem.Count - 1) * stackInterval);
-                }
-                while (temp.Count != 0)
-                {
-                    detectedItem.Push(temp.Pop());
-                    detectedItem.Peek().RePosition(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-                }
-            }*/
-        }
-
-
-
-
-        return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
-    }
-
-    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> Change(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
-    {
-        // handItem은 무조건 StackableItem
-
-        Init();
-
-        EItemType detectedItemType = detectedItem.Peek().ItemType;
-        if (detectedItemType == EItemType.axe || detectedItemType == EItemType.pick || detectedItemType == EItemType.bucket)
-        {
-            AI_StackItem temp = detectedItem.Pop();
-            while (handItem.Count != 0)
-            {
-                detectedItem.Push(handItem.Pop());
-                detectedItem.Peek().RePosition(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-            }
-            handItem.Push(temp);
-            handItem.Peek().RePosition(_ai.RightHandTransform, Vector3.zero);
-        }
-        else if (detectedItemType == EItemType.wood || detectedItemType == EItemType.steel)
-        {
-            if (handItem.Peek().CheckItemType(detectedItem.Peek()))
-            {
-                while (handItem.Count != 0)
-                {
-                    detectedItem.Push(handItem.Pop());
-                    detectedItem.Peek().RePosition(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-                }
-            }
-            else
-            {
-                if (handItem.Count <= 3 && detectedItem.Count <= 3)
-                {
-                    Stack<AI_StackItem> temp = new Stack<AI_StackItem>(handItem);
-                    _aiStack.PutDown();
-                    //handItem.Peek().PutDownResource(_aiStack.AroundEmptyBlockTranform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-                    //handItem.Clear();
-                    while (detectedItem.Count != 0)
-                    {
-                        handItem.Push(detectedItem.Pop());
-                        handItem.Peek().RePosition(_ai.TwoHandTransform, Vector3.up * (handItem.Count - 1) * stackInterval);
-                    }
-                    while (temp.Count != 0)
-                    {
-                        detectedItem.Push(temp.Pop());
-                        detectedItem.Peek().RePosition(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-                    }
-                }
-            }
-        }
-        else if (detectedItemType == EItemType.rail)
-        {
-            if (!CheckConnectedRail())
-            {
-                if (handItem.Count <= 3 && detectedItem.Count <= 3)
-                {
-                    Stack<AI_StackItem> temp = new Stack<AI_StackItem>(handItem);
-                    handItem.Clear();
-                    while (detectedItem.Count != 0)
-                    {
-                        handItem.Push(detectedItem.Pop());
-                        handItem.Peek().RePosition(_ai.TwoHandTransform, Vector3.up * (handItem.Count - 1) * stackInterval);
-                    }
-                    while (temp.Count != 0)
-                    {
-                        detectedItem.Push(temp.Pop());
-                        detectedItem.Peek().RePosition(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * (detectedItem.Count - 1) * stackInterval);
-                    }
-                }
-            }
+            detectedItem.Clear();
+            HelperCheckItemType = true;
         }
 
         return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
@@ -133,7 +41,7 @@ public class AI_StackableItem : AI_StackItem
             if (detectedItem.Count == 0)
                 break;
             handItem.Push(detectedItem.Pop());
-            handItem.Peek().RePosition(_ai.TwoHandTransform, Vector3.up * stackInterval);
+            handItem.Peek().RePosition(_aiHelper.TwoHandTransform, Vector3.up * stackInterval);
         }
 
         return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
@@ -146,14 +54,14 @@ public class AI_StackableItem : AI_StackItem
         while (handItem.Count != 0)
         {
             detectedItem.Push(handItem.Pop());
-            detectedItem.Peek().PutDownResource(_ai.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * stackInterval*handItem.Count);
+            detectedItem.Peek().PutDownResource(_aiHelper.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * stackInterval*handItem.Count);
         }
 
 
         return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
     }
 
-    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> EnemyPutDown(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
+    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> EnemyThrowResource(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
     {
         Init();
 
@@ -167,11 +75,60 @@ public class AI_StackableItem : AI_StackItem
         return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
     }
 
+    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> EnemyPickUp(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
+    {
+        Init();
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (detectedItem.Count == 0)
+                break;
+            handItem.Push(detectedItem.Pop());
+            handItem.Peek().RePosition(_aiEnemy.TwoHandTransform, Vector3.up * stackInterval);
+        }
+
+        return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
+    }
+
+    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> EnemyAutoGain(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
+    {
+        Init();
+
+        // 종류가 같다면 줍는다.
+        if (handItem.Peek().CheckItemType(detectedItem.Peek()))
+        {
+            EnemyCheckItemType = false;
+            while (handItem.Count < 3)
+            {
+                if (detectedItem.Count == 0)
+                    break;
+
+                handItem.Push(detectedItem.Pop());
+                handItem.Peek().RePosition(_aiEnemy.TwoHandTransform, Vector3.up * (handItem.Count) * stackInterval);
+            }
+        }
+
+        else
+        {
+            detectedItem.Clear();
+            EnemyCheckItemType = true;
+        }
+
+        return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
+
+    }
+
+    public override Pair<Stack<AI_StackItem>, Stack<AI_StackItem>> EnemyPutDown(Stack<AI_StackItem> handItem, Stack<AI_StackItem> detectedItem)
+    {
+        Init();
+
+        while (handItem.Count != 0)
+        {
+            detectedItem.Push(handItem.Pop());
+            detectedItem.Peek().PutDownResource(_aiEnemy.CurrentBlockTransform, Vector3.up * 0.5f + Vector3.up * stackInterval * handItem.Count);
+        }
 
 
-
-
-
-
-
+        return new Pair<Stack<AI_StackItem>, Stack<AI_StackItem>>(handItem, detectedItem);
+    }
 }

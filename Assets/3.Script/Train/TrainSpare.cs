@@ -15,6 +15,8 @@ public class TrainSpare : TrainMovement
         trainIndex = -1;
         GetMesh();
         engine = FindObjectOfType<TrainEngine>();
+        fireEffect = GetComponentInChildren<ParticleSystem>();
+        fireEffect.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,7 +32,7 @@ public class TrainSpare : TrainMovement
         trainIndex = _trainIdx;
         for (int i = 0; i < rails.Count; i++)
         {
-            train.rails.Enqueue(listToQue[i]);
+            train.rails.AddLast(listToQue[i]);
         }
         spawnTrainList.Add(train);
         engine.trains.Add(train);

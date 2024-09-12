@@ -13,12 +13,16 @@ public class WorldManager : MonoBehaviour
 
     [Header("오브젝트 관련")]
     // 플레이어, 기차, ai
-    [SerializeField] private PlayerController _playerPrefab;
+    [SerializeField] private Transform[] _creatures;
+
     [SerializeField] private GameObject _trainPrefab;
     // aiaiai
 
     // 총 월드의 개수
     private int _worldCount = 0;
+    private Transform[] parentTransform;
+
+
 
     // 전체 맵 저장
     public List<List<BlockMK2>>[] entireMap { get; private set; } = new List<List<BlockMK2>>[2];
@@ -28,12 +32,35 @@ public class WorldManager : MonoBehaviour
     public List<List<Transform>> worldObject { get; private set; } = new List<List<Transform>>();
     // 역들을 보관할 리스트
     public List<Station> stations { get; private set; } = new List<Station>();
+    // 맵 사이 바리케이드
+    public List<Transform> betweenBarricadeTransform { get; private set; } = new List<Transform>();
+
+    private MapData mapDataEnemy = null;
+
+    public GameObject enemyObject = null;
+
+    public void SpawnCow()
+    {
+        Vector3 pos = new Vector3(mapDataEnemy.creaturePos[(int)ECreature.cow].x, 0.5f, mapDataEnemy.creaturePos[(int)ECreature.cow].y);
+
+        for (int cowCount = 0; cowCount < 4; cowCount++)
+        {
+            Vector3 cowPos = pos + Random.insideUnitSphere * 4;
+            Transform obj = Instantiate(_creatures[(int)ECreature.cow], parentTransform[1]);
+            obj.localPosition = new Vector3(cowPos.x, 0.5f, cowPos.z);
+            obj.localRotation = Quaternion.identity;
+            obj.parent = null;
+        }
+
+        FindObjectOfType<BoidsManager>().Init();
+    }
 
     public async UniTask GenerateWorld(bool isTest)
     {
         // 맵 싸그리 생성
         MapData[] mapData = new MapData[2];
         _worldCount = mapData.Length;
+        parentTransform = new Transform[_worldCount];
 
         if (isTest)
         {
@@ -46,19 +73,55 @@ public class WorldManager : MonoBehaviour
             mapData[1] = FileManager.MapsData.mapsData[7];
         }
 
+        mapDataEnemy = mapData[1];
+
         for (int i = 0; i < _worldCount; i++)
         {
             // 부모의 위치 설정
             float width = mapData[i].mapData[0].arr.Length;
             Vector3 parentPosition = Vector3.right * width * i;
-            Transform currentParent = new GameObject("World " + i).transform;
-            currentParent.position = parentPosition;
+            parentTransform[i] = new GameObject("World " + i).transform;
+            parentTransform[i].position = parentPosition;
 
-            entireMap[i] = await _mapCreator.CreateMapAsync(mapData[i], currentParent, i == 0);
+            entireMap[i] = await _mapCreator.CreateMapAsync(mapData[i], parentTransform[i], i == 0);
         }
+
+        // 바리케이드 설정
+        betweenBarricadeTransform = _mapCreator.SetBarricade(parentTransform[0].GetChild(0), 
+            parentTransform[parentTransform.Length - 1].GetChild(parentTransform[parentTransform.Length - 1].childCount - 1));
+
+        foreach (Transform barricade in betweenBarricadeTransform)
+            barricade.gameObject.AddComponent<ImpassableObject>();
 
         // 맵을 제외한 오브젝트 초기화 (플레이어, 역, 기차, AI)
         await InitWorldObject();
+
+
+        for (int i = 0; i < mapData.Length; i++)
+        {
+            for(int j = 0; j < _creatures.Length; j++)
+            {
+                Vector3 pos = new Vector3(mapData[i].creaturePos[j].x, 0.5f, mapData[i].creaturePos[j].y);
+                if (mapData[i].creaturePos[j] == Vector2Int.zero)
+                    continue;
+
+                if(j != (int)ECreature.cow)
+                {
+                    Transform obj = Instantiate(_creatures[j], parentTransform[i]);
+                    obj.localPosition = pos;
+                    obj.localRotation = Quaternion.identity;
+
+                    BaseAI ai = obj.GetComponent<BaseAI>();
+                    if (ai != null)
+                        ai.SetHome(FindObjectOfType<Resource>());
+                    obj.parent = null;
+
+                    if (j == (int)ECreature.enemy)
+                        enemyObject = obj.gameObject;
+                }
+            }
+        }
+        // FindObjectOfType<BoidsManager>().Init();
 
         // 맵 자르고 초기위치 이동
         for (int i = 0; i < mapData.Length; i++)
@@ -89,6 +152,8 @@ public class WorldManager : MonoBehaviour
                 stations[i].InitStation(false);
         }
         FindObjectOfType<ShopManager>().currentStation = stations[1].transform;
+
+
 
 
         // 플레이어 생성, 기차 생성, AI 생성

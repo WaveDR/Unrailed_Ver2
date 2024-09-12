@@ -49,16 +49,22 @@ MonoBehaviour:
   listToQue: []
   trainMesh: {fileID: 0}
   trainUpgradeLevel: 1
+  cameraTarget: []
   targetCount: 0
   destroyParticle: {fileID: 0}
   fireEffect: {fileID: 0}
   isGoal: 0
   isBurn: 0
   isReady: 0
+  isTrainOver: 0
   isOver: 0
-  trainSpeed: 0.5
+  trainSpeed: 0.06
   _trainRotateSpeed: 0
   goalSpeed: 6
+  overSpeed: 0.1
+  _trainMoveSpeed: 0
+  warningIcon: {fileID: 0}
+  overText: {fileID: 0}
   trainSpare:
   - {fileID: 1639675127031358324, guid: fe847720010c3c64282b9a43209af7b4, type: 3}
   - {fileID: 7649597831721704386, guid: 1585c0c4fca12564d86e68989f30ac49, type: 3}

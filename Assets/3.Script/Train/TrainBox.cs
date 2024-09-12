@@ -2,22 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class BoxItem
+{
+    public BoxItem(EItemType type) { itemType = type; }
+    public EItemType itemType;
+}
+
 public class TrainBox : TrainMovement
 {
-    public List<Item> woods = new List<Item>();
-    public List<Item> steels = new List<Item>();
+    [SerializeField] private Transform woodPos;
+    [SerializeField] private Transform steelPos;
+
+    public List<BoxItem> woods = new List<BoxItem>();
+    public List<BoxItem> steels = new List<BoxItem>();
+
+    public Stack<MyItem> woodStack = new Stack<MyItem>();
+    public Stack<MyItem> steelStack = new Stack<MyItem>();
 
     [SerializeField] private TrainWorkBench workBench;
     public Player player;
 
     public int maxItem;
+    public bool madeReady;
+    private bool tutorialDone;
     // Start is called before the first frame update
     void Awake()
     {
         GetMesh();
-        trainUpgradeLevel = 2;
+        trainUpgradeLevel = 1;
         workBench = FindObjectOfType<TrainWorkBench>();
         fireEffect.gameObject.SetActive(false);
+        TrainUpgrade();
 
         StartCoroutine(Warning()); //첫 목재 석재 넣어라
     }
@@ -26,11 +42,7 @@ public class TrainBox : TrainMovement
     void Update()
     {
         TrainMovePos();
-        TrainUpgrade();
-        if (!isBurn)
-        {
-            GiveMeItem();
-        }
+ 
     }
     public override void TrainUpgrade()
     {
@@ -52,17 +64,55 @@ public class TrainBox : TrainMovement
     }
     private void RelayItems()
     {
-        woods.Remove(woods[0]);
-        steels.Remove(steels[0]);
         workBench.MakingRail();
     }
-    public void GiveMeItem()
+/*    public void GiveMeItem(EItemType itemtype, Stack<MyItem> itemCount)
     {
-        //아이템 보관은 플레이어 다 만들어지면 ㄱㄱ
-        //최대 보유량 3개
-        //나무3개 철 3개
-        //최대 보유량 매직넘버링 말고 최대값 변수로 구현
-        //목재와 철 1개씩 존재할 경우 if문으로 RelayItems 실행
-        //RelayItems();
+        switch (itemtype)
+        {
+            case EItemType.wood:
+                woods.Add(new BoxItem(itemtype));
+                itemCount.Peek();
+                break;
+
+            case EItemType.steel:
+                steels.Add(new BoxItem(itemtype));
+                itemCount.Peek();
+                break;
+        }
+    }*/
+
+    public Stack<MyItem> GiveMeItem(Stack<MyItem> handItem)
+    {
+
+        if (!tutorialDone)
+        {
+            warningIcon.SetActive(false);
+            tutorialDone = true;
+        }
+        MyItem item;
+
+        switch (handItem.Peek().ItemType)
+        {
+            case EItemType.wood:
+                item = handItem.Pop();
+                item.transform.SetParent(woodPos);
+                item.transform.localPosition = Vector3.up * woodStack.Count * 0.15f;
+                item.transform.localRotation = Quaternion.identity;
+                // woods.Add(new BoxItem(item.ItemType));
+                woodStack.Push(item);
+                break;
+
+            case EItemType.steel:
+                item = handItem.Pop();
+                item.transform.SetParent(steelPos);
+                item.transform.localPosition = Vector3.up * steelStack.Count * 0.15f;
+                item.transform.localRotation = Quaternion.identity;
+                //steels.Add(new BoxItem(item.ItemType));
+                steelStack.Push(item);
+                break;
+        }
+        
+        return handItem;
     }
 }

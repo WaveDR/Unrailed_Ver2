@@ -428,6 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBolt: 0
+  speed: 2
 --- !u!1 &1392105945654444479
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,7 +665,8 @@ GameObject:
   - component: {fileID: -7998708613330467761}
   - component: {fileID: 6138128580228161194}
   - component: {fileID: 7588040259905402450}
-  m_Layer: 0
+  - component: {fileID: -5326389197603946323}
+  m_Layer: 22
   m_Name: Shop_Box
   m_TagString: ShopItem
   m_Icon: {fileID: 0}
@@ -694,11 +696,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071145127775875921}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.3062394}
-  m_Center: {x: 0, y: 0.5, z: -0.29341483}
+  m_Size: {x: 1, y: 0.93, z: 1.36}
+  m_Center: {x: 0, y: 0.51, z: -0.3}
 --- !u!114 &6138128580228161194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,10 +713,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17312cb7b58d7ec4db2b70e43d7d365c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shop: {fileID: 0}
   itemType: 2
-  itemCost: 2
+  itemCost: 1
   itemIdx: 0
+  _isSpawn: 1
 --- !u!54 &7588040259905402450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -731,6 +733,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-5326389197603946323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071145127775875921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831ac8066088a348af1d3371650a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlight: 0
+  _brightAmount: 50
 --- !u!1 &2779711129589284112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1444,6 +1460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBolt: 0
+  speed: 2
 --- !u!1 &4000633482367725215
 GameObject:
   m_ObjectHideFlags: 0

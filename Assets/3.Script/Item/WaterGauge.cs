@@ -44,6 +44,7 @@ public class WaterGauge : MonoBehaviour
 
     public void ResetWater()
     {
+        CurrentGauge = 0;
         _waterSlide.value = 0;
     }
 

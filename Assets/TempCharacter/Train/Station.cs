@@ -79,8 +79,6 @@ public class Station : MonoBehaviour
             }
         }
 
-        Debug.Log(railTransform);
-
         while (true)
         {
             rail = railTransform.GetComponent<RailController>();

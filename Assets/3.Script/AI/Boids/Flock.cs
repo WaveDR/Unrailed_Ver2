@@ -66,9 +66,12 @@ public class Flock : MonoBehaviour
             AlignmentPosition = AvgFlockHeading;
         }
 
+        if(_transform!=null)
+        {
+            Position = _transform.position;
+            Forward = _transform.forward;
 
-        Position = _transform.position;
-        Forward = _transform.forward;
+        }
 
     }
 

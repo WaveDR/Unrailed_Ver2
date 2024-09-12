@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BehaviorTree))]
+
 public class FlockBT : MonoBehaviour
 {
     public class BlackBoardKey : BlackboardKeyBase
@@ -18,10 +18,8 @@ public class FlockBT : MonoBehaviour
 
 
     private BehaviorTree _tree;
-    private Blackboard<BlackBoardKey> _localMemory;
-
     private PathFindingAgent _agent;
-    private Transform _transform;
+    private Blackboard<BlackBoardKey> _localMemory;
 
     private Flock _flock;
 
@@ -29,7 +27,6 @@ public class FlockBT : MonoBehaviour
     {
         _tree = GetComponent<BehaviorTree>();
         _agent = GetComponent<PathFindingAgent>();
-        _transform = GetComponent<Transform>();
         _flock = GetComponent<Flock>();
     }
 
@@ -42,15 +39,6 @@ public class FlockBT : MonoBehaviour
         _localMemory.SetGeneric<Vector3>(BlackBoardKey.Alignment, Vector3.zero);
 
         var BTRoot = _tree.RootNode.Add<BTNode_Selector>("BT START");
-        BTRoot.AddService<BTServiceBase>("충돌 가능성 감지", (float deltaTime) =>
-        {
-            //충돌 가능성이 있다면
-            if(_flock.IsHeadingForCollision())
-            {
-                Debug.Log("위험해요");
-            }
-        });
-
         var isHeadingCollison = BTRoot.Add<BTNode_Sequence>("충돌 가능성 검사");
         isHeadingCollison.AddDecorator<BTDecoratorBase>("충돌 가능성이 있나요?", () =>
          {
@@ -78,7 +66,6 @@ public class FlockBT : MonoBehaviour
         () =>
         {
             //Cohesion
-            Debug.Log("Cohesion");
             _agent.MoveTo(_flock.Center);
             return BehaviorTree.ENodeStatus.InProgress;
         }, () =>
@@ -94,7 +81,6 @@ public class FlockBT : MonoBehaviour
         () =>
         {
             //Alignment
-            Debug.Log("Alignment");
             _agent.MoveTo(_flock.AlignmentPosition);
             return BehaviorTree.ENodeStatus.InProgress;
         }, () =>
@@ -104,8 +90,6 @@ public class FlockBT : MonoBehaviour
 
         });
 
-
-
         //충돌 가능성이 있다면
         //자기들끼리는 피하기(Separation)
         var SeparationRoot = BTRoot.Add<BTNode_Sequence>("Separation");
@@ -113,7 +97,6 @@ public class FlockBT : MonoBehaviour
         () =>
         {
             //Separation
-            Debug.Log("Separation");
             _agent.MoveTo(_flock.ObstacleRays());
             return BehaviorTree.ENodeStatus.InProgress;
         }, () =>

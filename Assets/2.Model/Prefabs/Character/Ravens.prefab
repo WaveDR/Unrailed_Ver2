@@ -578,9 +578,10 @@ GameObject:
   - component: {fileID: 2124244387907957694}
   - component: {fileID: 2124244387907957695}
   - component: {fileID: 1656801086355639148}
+  - component: {fileID: 5200673837890903794}
   m_Layer: 0
   m_Name: Bird (3)
-  m_TagString: InvisibleObject
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -632,6 +633,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5200673837890903794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124244387907957688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 3
 --- !u!1 &2124244388021202598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,9 +1387,10 @@ GameObject:
   - component: {fileID: 2124244388361546320}
   - component: {fileID: 2124244388361546321}
   - component: {fileID: 224102172076879448}
+  - component: {fileID: 3174618437036956123}
   m_Layer: 0
   m_Name: Bird (5)
-  m_TagString: InvisibleObject
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1426,6 +1442,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3174618437036956123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124244388361546322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 3
 --- !u!1 &2124244388370697175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,9 +1789,10 @@ GameObject:
   - component: {fileID: 2124244388691201028}
   - component: {fileID: 2124244388691201029}
   - component: {fileID: 825409803774561451}
+  - component: {fileID: 2556358158708923666}
   m_Layer: 0
   m_Name: Bird (4)
-  m_TagString: InvisibleObject
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1813,6 +1844,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2556358158708923666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124244388691201030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 3
 --- !u!1 &2124244388725890217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,9 +1985,10 @@ GameObject:
   - component: {fileID: 2124244388867379871}
   - component: {fileID: 2124244388867379864}
   - component: {fileID: 9220114325499481198}
+  - component: {fileID: 7064948490713650904}
   m_Layer: 0
   m_Name: Bird (2)
-  m_TagString: InvisibleObject
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1994,6 +2040,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7064948490713650904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124244388867379865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 3
 --- !u!1 &2124244388909239386
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,9 +2424,10 @@ GameObject:
   - component: {fileID: 2124244389215605354}
   - component: {fileID: 2124244389215605353}
   - component: {fileID: 7174319487859835100}
+  - component: {fileID: 2666868298365583715}
   m_Layer: 0
   m_Name: Bird
-  m_TagString: InvisibleObject
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2418,6 +2479,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2666868298365583715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124244389215605355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 3
 --- !u!1 &2124244389427054261
 GameObject:
   m_ObjectHideFlags: 0

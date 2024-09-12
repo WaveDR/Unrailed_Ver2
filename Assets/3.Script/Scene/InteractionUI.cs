@@ -9,6 +9,9 @@ public class InteractionUI : MonoBehaviour
     public Image image;
     public Text text;
     public Sprite[] triggerImage;
+
+    public bool isMapEditor = false;
+    public bool Exit;
     private void Awake()
     {
         image.sprite = triggerImage[0];
@@ -16,16 +19,38 @@ public class InteractionUI : MonoBehaviour
     }
     public void GameStart()
     {
-        //goto 후에 바꿀 것
-        SoundManager.Instance.PlaySoundEffect("Btn_Click");
-        SceneManager.LoadScene("TrainScene");
+        if (!Exit && !isMapEditor)
+        {
+            Debug.Log("이거 함 1");
+
+            //goto 후에 바꿀 것
+            SoundManager.Instance.PlaySoundEffect("Btn_Click");
+            SceneManager.LoadScene("InGame");
+        }
+       
   
     }
     public void GameExit()
     {
-        //goto 후에 바꿀 것
-        SoundManager.Instance.PlaySoundEffect("Btn_Click");
-        Application.Quit();
+        if (Exit && !isMapEditor)
+        {
+            Debug.Log("이거 함 2");
+
+            //goto 후에 바꿀 것
+            SoundManager.Instance.PlaySoundEffect("Btn_Click");
+            Application.Quit();
+        }
+    }
+
+    public void GoMapEdit()
+    {
+        if(isMapEditor && !Exit)
+        {
+            Debug.Log("이거 함 3");
+
+            SoundManager.Instance.PlaySoundEffect("Btn_Click");
+            SceneManager.LoadScene("MapTool");
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -7705,9 +7705,11 @@ GameObject:
   - component: {fileID: 1998094057646125469}
   - component: {fileID: 3584017345647214217}
   - component: {fileID: -4388053969770183316}
+  - component: {fileID: 8485267864892765787}
+  - component: {fileID: -57213845274149183}
   m_Layer: 23
   m_Name: Train_Rail_Clone
-  m_TagString: Untagged
+  m_TagString: Invisible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7804,6 +7806,34 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1073741824
   equipment: {fileID: 0}
+--- !u!114 &8485267864892765787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402043901895155594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831ac8066088a348af1d3371650a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlight: 0
+  _brightAmount: 50
+--- !u!114 &-57213845274149183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402043901895155594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 2
 --- !u!1 &7419329411036280246
 GameObject:
   m_ObjectHideFlags: 0

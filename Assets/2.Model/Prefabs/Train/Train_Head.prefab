@@ -3993,16 +3993,22 @@ MonoBehaviour:
   listToQue: []
   trainMesh: {fileID: 0}
   trainUpgradeLevel: 0
+  cameraTarget: []
   targetCount: 0
   destroyParticle: {fileID: 947983282}
   fireEffect: {fileID: 0}
   isGoal: 0
   isBurn: 0
   isReady: 0
+  isTrainOver: 0
   isOver: 0
-  trainSpeed: 0.5
+  trainSpeed: 0.06
   _trainRotateSpeed: 0
   goalSpeed: 6
+  overSpeed: 0.1
+  _trainMoveSpeed: 0
+  warningIcon: {fileID: 0}
+  overText: {fileID: 0}
   smokeMesh:
   - {fileID: 7212520078287782685}
   - {fileID: 4489390566581948575}
@@ -4013,6 +4019,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   anim: {fileID: 0}
+  startCount: 0
 --- !u!95 &7077014543622223247
 Animator:
   serializedVersion: 3

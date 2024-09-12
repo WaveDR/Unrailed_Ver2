@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EItemType { wood, steel, rail, pick, axe, bucket, train, animal };
+public enum EItemType { wood, steel, rail, pick, axe, bucket, train, animal, dynamite };
 public enum EEquipPart { rightHand, twoHand }
 
 public abstract class MyItem : MonoBehaviour
@@ -12,13 +12,17 @@ public abstract class MyItem : MonoBehaviour
     [SerializeField] protected EItemType itemType;
     [SerializeField] protected LayerMask blockLayer;
 
+    protected AI_Item _item;
+
     [HideInInspector] public Transform equipment;
 
+    public EEquipPart EquipPart => _equipPart;
     protected PlayerController player;
 
     protected virtual void Awake()
     {
         player = FindObjectOfType<PlayerController>();
+        _item = GetComponent<AI_Item>();
 
         if (player == null)
             return;
@@ -34,6 +38,28 @@ public abstract class MyItem : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(equipment == null)
+        {
+            player = FindObjectOfType<PlayerController>();
+            _item = GetComponent<AI_Item>();
+
+            if (player == null)
+                return;
+
+            switch (_equipPart)
+            {
+                case EEquipPart.rightHand:
+                    equipment = player.RightHandTransform;
+                    break;
+                case EEquipPart.twoHand:
+                    equipment = player.TwoHandTransform;
+                    break;
+            }
+        }
+    }
+
 
     public EItemType ItemType => itemType;
 
@@ -44,6 +70,10 @@ public abstract class MyItem : MonoBehaviour
 
     public virtual void RePosition(Transform parent, Vector3 pos)
     {
+        if(_item!=null)
+        {
+            _item.PickUp();
+        }
         transform.SetParent(parent);
         transform.localPosition = pos;
         transform.localRotation = Quaternion.identity;
@@ -90,6 +120,14 @@ public abstract class MyItem : MonoBehaviour
         return rail != FindObjectOfType<GoalManager>().lastRail && rail.isInstance != true;
     }
 
+    // 검사할 레일이 설치되어 있으면 true, 아니면 false 반환
+    public virtual bool IsRailInstance(RailController rail)
+    {
+        if (rail == null)
+            return false;
+
+        return rail.isInstance == true;
+    }
 
     public virtual void ActiveWater(bool falg)
     {

@@ -92,7 +92,8 @@ GameObject:
   - component: {fileID: 7206750060758765605}
   - component: {fileID: 2131763644526987167}
   - component: {fileID: 8843296512338108443}
-  m_Layer: 0
+  - component: {fileID: -1811662533997020433}
+  m_Layer: 15
   m_Name: BlackStone
   m_TagString: Invisible
   m_Icon: {fileID: 0}
@@ -126,7 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df4e5c5d0110e34082ec4414a568f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originPos: {x: 0, y: 0, z: 0}
+  impassableType: 0
+  impassableDir: 0
+  length: 1
 --- !u!65 &8843296512338108443
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -140,3 +143,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &-1811662533997020433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7206750060758765626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 1

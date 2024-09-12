@@ -29,6 +29,9 @@ public class TopUI : MonoBehaviour
     [Header("GroundArea")]
     [SerializeField] private Button[] groundButtons;
 
+    [Header("CreatureArea")]
+    [SerializeField] private Button[] creatureButtons;
+
     [Header("ETC")]
     [SerializeField] private MapEditorMK2 mapEditor;
     [SerializeField] private LineGrid lineGrid;
@@ -100,8 +103,18 @@ public class TopUI : MonoBehaviour
         for(int i = 0; i < groundButtons.Length; i++)
         {
             int index = i;
+            groundButtons[i].onClick.AddListener(() => mapEditor.isCreatureMode = false);
             groundButtons[i].onClick.AddListener(() => mapEditor.materialIndex = index);
             groundButtons[i].onClick.AddListener(() => SetButtonOutline(index));
+        }
+
+        // creature ¹öÆ°µé
+        for(int i = 0; i < creatureButtons.Length; i++)
+        {
+            int index = i;
+            creatureButtons[i].onClick.AddListener(() => mapEditor.isCreatureMode = true);
+            creatureButtons[i].onClick.AddListener(() => mapEditor.creatureIndex = index);
+            creatureButtons[i].onClick.AddListener(() => SetCreatureButtonOutline(index));
         }
     }
 
@@ -115,11 +128,36 @@ public class TopUI : MonoBehaviour
 
     private void SetButtonOutline(int index)
     {
+        SetInitButtonOutline();
+
+        for (int i = 0; i < groundButtons.Length; i++)
+        {
+            if (i == index)
+                groundButtons[i].GetComponent<Outline>().enabled = true;
+        }
+    }
+
+    private void SetCreatureButtonOutline(int index)
+    {
+        SetInitButtonOutline();
+
+        for (int i = 0; i < creatureButtons.Length; i++)
+        {
+            if (i == index)
+                creatureButtons[i].GetComponent<Outline>().enabled = true;
+        }
+    }
+
+    private void SetInitButtonOutline()
+    {
         for(int i = 0; i < groundButtons.Length; i++)
         {
             groundButtons[i].GetComponent<Outline>().enabled = false;
-            if (i == index)
-                groundButtons[i].GetComponent<Outline>().enabled = true;
+        }
+
+        for(int i = 0; i < creatureButtons.Length; i++)
+        {
+            creatureButtons[i].GetComponent<Outline>().enabled = false;
         }
     }
 }

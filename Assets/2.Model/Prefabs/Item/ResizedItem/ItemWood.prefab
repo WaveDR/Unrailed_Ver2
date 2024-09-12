@@ -209,6 +209,8 @@ GameObject:
   - component: {fileID: -1283254355168865540}
   - component: {fileID: 8685167762156443745}
   - component: {fileID: -9157864519052688982}
+  - component: {fileID: 8467944121781057002}
+  - component: {fileID: 6830400745238740069}
   m_Layer: 11
   m_Name: ItemWood
   m_TagString: Invisible
@@ -257,6 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Type: 3
+  Stack: {fileID: 0}
   _item: {fileID: 0}
   _resourceHp: 2.7
 --- !u!114 &8685167762156443745
@@ -295,6 +298,34 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1073741824
   equipment: {fileID: 0}
+--- !u!114 &8467944121781057002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187630036778189682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831ac8066088a348af1d3371650a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlight: 0
+  _brightAmount: 50
+--- !u!114 &6830400745238740069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187630036778189682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 1
 --- !u!1 &7761388225402387580
 GameObject:
   m_ObjectHideFlags: 0

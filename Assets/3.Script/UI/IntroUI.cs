@@ -13,7 +13,7 @@ public class IntroUI : MonoBehaviour
     [SerializeField] private GameObject lobbyTalk;
     [SerializeField] private GameObject playerTutorial;
 
-    [SerializeField] private Player player;
+    [SerializeField] private LobbyPlayer player;
 
     public float _introTime;
     private bool _introInput;
@@ -22,7 +22,7 @@ public class IntroUI : MonoBehaviour
 
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
+        player = FindObjectOfType<LobbyPlayer>();
         titleTalk.SetActive(false);
         lobbyAnim.SetActive(false);
         lobbyTalk.SetActive(false);

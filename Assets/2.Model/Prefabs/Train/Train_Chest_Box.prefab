@@ -1217,21 +1217,30 @@ MonoBehaviour:
   listToQue: []
   trainMesh: {fileID: 0}
   trainUpgradeLevel: 0
+  cameraTarget: []
   targetCount: 0
   destroyParticle: {fileID: 1476757627}
   fireEffect: {fileID: 0}
   isGoal: 0
   isBurn: 0
   isReady: 0
+  isTrainOver: 0
   isOver: 0
-  trainSpeed: 0.5
+  trainSpeed: 0.06
   _trainRotateSpeed: 0
   goalSpeed: 6
+  overSpeed: 0.1
+  _trainMoveSpeed: 0
+  warningIcon: {fileID: 0}
+  overText: {fileID: 0}
+  woodPos: {fileID: 0}
+  steelPos: {fileID: 0}
   woods: []
   steels: []
   workBench: {fileID: 0}
   player: {fileID: 0}
   maxItem: 0
+  madeReady: 0
 --- !u!65 &749403203522764796
 BoxCollider:
   m_ObjectHideFlags: 0

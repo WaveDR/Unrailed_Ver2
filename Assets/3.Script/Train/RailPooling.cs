@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RailPooling : MonoBehaviour
 {
-
     public GameObject prefabs;
     public GameObject[] rails;
     public Vector3 poolingVec;
@@ -22,12 +21,18 @@ public class RailPooling : MonoBehaviour
             rails[i].SetActive(false);
         }
     }
-    public void TransformRail(Vector3 moveVec)
+    public void TransformRail(Transform moveVec, bool MakeRail)
     {
-        rails[countPlus].transform.position = moveVec;
+        rails[countPlus].transform.position = moveVec.position;
         rails[countPlus].SetActive(true);
+
+        if (MakeRail)
+        {
+            rails[countPlus].transform.parent = moveVec;
+        }
+
         countPlus++;
-        if(countPlus >= rails.Length)
+        if (countPlus >= rails.Length)
         {
             countPlus = 0;
         }

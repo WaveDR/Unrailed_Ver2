@@ -11,20 +11,30 @@ public class WorldResource : MonoBehaviour
         Stone,
         Resource
     }
-    private EType _Type;
+    [SerializeField] private EType _Type;
     public EType Type => _Type;
+
+    public AI_StackItem Stack;
 
     [SerializeField] private Transform _item;
     [SerializeField] private float _resourceHp = 2.7f;
+    private float _scaleAmountOfChange = 0.2f;
     private float _resourceScale = Mathf.Clamp01(1);
 
     void Start()
     {
+        Stack = GetComponent<AI_StackItem>();
         ResourceTracker.Instance.RegisterResource(this);
     }
 
-    //자원 캐기
+    private void OnDestroy()
+    {
+        ResourceTracker.Instance.DeRegisterResource(this);
+    }
 
+
+
+    //자원 캐기
     public bool isDig()
     {
         if (_resourceHp > 0)
@@ -32,7 +42,6 @@ public class WorldResource : MonoBehaviour
         else
         {
             SpawnItem();
-            ResourceTracker.Instance.DeRegisterResource(this);
             return false;
         }
           
@@ -45,9 +54,19 @@ public class WorldResource : MonoBehaviour
             yield return wait;
         while(_resourceHp > 0)
         {
-            _resourceScale -= 0.25f;
+            switch (Type)
+            {
+                case WorldResource.EType.Wood:
+                    SoundManager.Instance.PlaySoundEffect("Wood_Hit");
+                    break;
+                case WorldResource.EType.Stone:
+                    SoundManager.Instance.PlaySoundEffect("Steel_Hit");
+                    break;
+            }
+
+            _resourceScale -= 0.1f;
             _resourceHp--;
-            transform.localScale = new Vector3(_resourceScale, _resourceScale, _resourceScale);
+            transform.localScale -= Vector3.one * _scaleAmountOfChange;
             yield return wait;
         }
             yield return wait;

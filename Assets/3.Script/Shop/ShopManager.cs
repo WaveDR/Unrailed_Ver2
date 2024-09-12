@@ -12,7 +12,7 @@ public class ShopManager : MonoBehaviour
     public TrainMovement[] trains;
 
     [SerializeField] private Animator anim;
-    [SerializeField] private Transform[] shopUpgradeTrainPos;
+    [SerializeField] public Transform[] shopUpgradeTrainPos;
     [SerializeField] private Transform[] shopEnginePos;
     public Transform[] shopNewTrainPos;
 
@@ -36,7 +36,9 @@ public class ShopManager : MonoBehaviour
     public Image[] goToLoading;
 
     public Transform currentStation = null;
+    public Transform nextGame;
 
+    public bool isPlayerShop;
     private void Awake()
     {
         //싱글톤 패턴
@@ -69,15 +71,18 @@ public class ShopManager : MonoBehaviour
         if (!_isShop)
         {
             RandItemSpawn();
+
+            isPlayerShop = true;
             _isShop = true;
         }
 
-        Debug.Log("상점으로 위치 이동");
+        //Debug.Log("상점으로 위치 이동");
         anim.transform.position = currentStation.position;
 
         anim.SetBool("isReady", true);
         SoundManager.Instance.audioSourdEngine.Stop();
         SoundManager.Instance.StopAllSound();
+        SoundManager.Instance.PlaySoundBgm("Shop_Bgm");
     }  // 상점 오픈 애니메이션
 
     public void ShopOff()
@@ -161,28 +166,16 @@ public class ShopManager : MonoBehaviour
     {
         if(other.CompareTag("Invisible"))
         {
-            // 블럭
-            if(other.gameObject.layer == LayerMask.NameToLayer("Block"))
-            {
-                other.GetComponent<InvisibleBlock>().UnShow();
-            }
-            // 블럭에 부착된 아이템, 지형지물
-            else
-            {
-                other.gameObject.SetActive(false);
-            }
-        }
-
-        // 새, 도적, 동물 등등
-        if(other.CompareTag("InvisibleObject"))
-        {
-            other.transform.GetChild(0).gameObject.SetActive(false);
+            InVisibleObject invisibleObject = other.GetComponent<InVisibleObject>();
+            if(invisibleObject != null)
+                invisibleObject.UnShow();
         }
 
         if (other.CompareTag("ShopItem"))
         {
-            GameObject obj = other.transform.GetChild(0).gameObject;
-            obj.SetActive(true);
+            InVisibleObject invisibleObject = other.GetComponent<InVisibleObject>();
+            if (invisibleObject != null)
+                invisibleObject.Show();
         }
     }
 
@@ -190,33 +183,24 @@ public class ShopManager : MonoBehaviour
     {
         if (other.CompareTag("Invisible"))
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Block"))
-            {
-                other.GetComponent<InvisibleBlock>().Show();
-            }
-            else
-            {
-                other.gameObject.SetActive(true);
-            }
-        }
-
-        // 새, 도적, 동물 등등
-        if (other.CompareTag("InvisibleObject"))
-        {
-            other.transform.GetChild(0).gameObject.SetActive(true);
+            InVisibleObject invisibleObject = other.GetComponent<InVisibleObject>();
+            if (invisibleObject != null)
+                invisibleObject.Show();
         }
 
         if (other.CompareTag("ShopItem"))
         {
-            GameObject obj = other.transform.GetChild(0).gameObject;
-            obj.SetActive(false);
+            InVisibleObject invisibleObject = other.GetComponent<InVisibleObject>();
+            if (invisibleObject != null)
+                invisibleObject.UnShow();
         }
     }
 
     private IEnumerator TrainStartMove() // 열차 시작 카운트다운
     {
+        SoundManager.Instance.StopAllSound();
+        isPlayerShop = false;
         trainEngine.isReady = true;
-
         yield return new WaitForSeconds(10f);
         trainEngine.anim.SetBool("CountDown", true);
 

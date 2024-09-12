@@ -484,6 +484,8 @@ GameObject:
   - component: {fileID: -5712747344957167094}
   - component: {fileID: -3485905577784638331}
   - component: {fileID: -119904818378944820}
+  - component: {fileID: 4438600932828538156}
+  - component: {fileID: 3848025081289384696}
   m_Layer: 12
   m_Name: ItemPick
   m_TagString: Invisible
@@ -532,11 +534,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca2dcde514f144c88866bac8ad366a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _equipPart: 0
   stackInterval: 0.15
   itemType: 3
   blockLayer:
     serializedVersion: 2
     m_Bits: 1073741824
+  equipment: {fileID: 0}
 --- !u!114 &-3485905577784638331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,6 +567,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc230da49f1ad8549ac538b0b55b2dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4438600932828538156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8647543255831081959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831ac8066088a348af1d3371650a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlight: 0
+  _brightAmount: 50
+--- !u!114 &3848025081289384696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8647543255831081959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 4
 --- !u!1 &9046565917231300933
 GameObject:
   m_ObjectHideFlags: 0

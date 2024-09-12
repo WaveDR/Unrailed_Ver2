@@ -34,8 +34,7 @@ public class ResourceTracker : MonoBehaviour
 
     public void DeRegisterResource(WorldResource resource)
     {
-
-          _trackedResources[resource.Type].Remove(resource);
+        _trackedResources[resource.Type].Remove(resource);
     }
 
 
@@ -43,7 +42,8 @@ public class ResourceTracker : MonoBehaviour
     private float Distance2D(Vector3 pos1, Vector3 pos2)
     {
         return Mathf.Sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x) +
-                          (pos1.z - pos2.z) * (pos1.z - pos2.z));
+                          (pos1.z - pos2.z) * (pos1.z - pos2.z) +
+                          (pos1.y - pos2.y) * (pos1.y - pos2.y));
     }
 
     public List<WorldResource> GetResourcesInRange(WorldResource.EType type, Vector3 location, float range)

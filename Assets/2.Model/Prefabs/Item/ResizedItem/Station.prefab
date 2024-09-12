@@ -563,6 +563,7 @@ GameObject:
   - component: {fileID: 1142094947943389457}
   - component: {fileID: 2033693048532728120}
   - component: {fileID: -474272046899439217}
+  - component: {fileID: -6686298539282765554}
   m_Layer: 0
   m_Name: Station
   m_TagString: Untagged
@@ -597,6 +598,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df4e5c5d0110e34082ec4414a568f22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impassableType: 0
+  impassableDir: 0
+  length: 1
   originPos: {x: 0, y: 0, z: 0}
 --- !u!65 &2033693048532728120
 BoxCollider:
@@ -629,6 +633,22 @@ MonoBehaviour:
   railLayer:
     serializedVersion: 2
     m_Bits: 8388608
+--- !u!114 &-6686298539282765554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2925078470114173653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df4e5c5d0110e34082ec4414a568f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impassableType: 0
+  impassableDir: 3
+  length: 2
+  originPos: {x: 0, y: 0, z: 0}
 --- !u!1 &2975341932830327331
 GameObject:
   m_ObjectHideFlags: 0

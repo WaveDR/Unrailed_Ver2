@@ -9,7 +9,6 @@ public class Train_Dir : TrainMovement
     private void Awake()
     {
         GetMesh();
-        fireEffect.gameObject.SetActive(false);
     }
     // Update is called once per frame
     void Update()

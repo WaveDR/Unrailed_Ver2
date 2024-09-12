@@ -7,14 +7,8 @@ public class BombTest : MonoBehaviour
     [SerializeField] private LayerMask banglayer;
     [SerializeField] private float radius = 2f;
     [SerializeField] private ParticleSystem ExplosionEffect;
+    [SerializeField] private ParticleSystem BombEffect;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Setup();
-        }
-    }
 
     public void Setup()
     {
@@ -27,6 +21,10 @@ public class BombTest : MonoBehaviour
         ExplosionEffect.Play();
         yield return new WaitForSeconds(3f);
 
+        BombEffect.transform.parent = null;
+        BombEffect.Play();
+
+        SoundManager.Instance.PlaySoundEffect("Train_Broken");
         // 터질 수 있는거 감지해서 터짐
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, radius, banglayer);
         for(int i = 0; i< hitCollider.Length; i++)
@@ -47,6 +45,7 @@ public class BombTest : MonoBehaviour
         PlayerController player = FindObjectOfType<PlayerController>();
         if(player != null && Vector3.Distance(transform.position, player.transform.position) < radius)
         {
+            SoundManager.Instance.PlaySoundEffect("Enemy_Hit");
             player.Respawn();
         }
 

@@ -108,11 +108,18 @@ public class MyRailItem : MyItem
 
         return new Pair<Stack<MyItem>, Stack<MyItem>>(handItem, detectedItem);
     }
-
     public override Pair<Stack<MyItem>, Stack<MyItem>> PickUp(Stack<MyItem> handItem, Stack<MyItem> detectedItem)
     {
-        if(IsRailInteractive(detectedItem.Peek().GetComponent<RailController>()))
+        RailController detectedRail = detectedItem.Peek().GetComponent<RailController>();
+
+        // 설치된 레일이 아니라면
+        if (!IsRailInstance(detectedRail))
         {
+            // 마지막 레일이라면 꺼내는 메소드 호출
+            // 마지막 레일이라면 어차피 하나밖에 없으니까 기본 줍는 로직 써도 됨
+            if (detectedRail.Equals(FindObjectOfType<GoalManager>().lastRail))
+                detectedRail.PickUpRail();
+
             for (int i = 0; i < 3; i++)
             {
                 if (detectedItem.Count == 0)
@@ -124,6 +131,7 @@ public class MyRailItem : MyItem
 
         return new Pair<Stack<MyItem>, Stack<MyItem>>(handItem, detectedItem);
     }
+
 
     public override Pair<Stack<MyItem>, Stack<MyItem>> PutDown(Stack<MyItem> handItem, Stack<MyItem> detectedItem)
     {

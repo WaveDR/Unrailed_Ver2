@@ -7,16 +7,18 @@ public class GotoLoading : MonoBehaviour
 {
 
     [SerializeField] private float loadingSpeed;
-    [SerializeField] private bool isLoad;
-    [SerializeField] private float loadingCharge = 0f;
+    [SerializeField] public bool isLoad;
+    [SerializeField] public float loadingCharge = 0f;
     public int loadTypeIndex;
     [SerializeField] private Text btnText;
     [SerializeField] private Image btnImage;
     public Sprite[] triggerImage;
     private bool _isGoto;
+    private Helper _helper;
     // Start is called before the first frame update
     void OnEnable()
     {
+        _helper = FindObjectOfType<Helper>();
         loadingCharge = 0;
         isLoad = false;
         _isGoto = false;
@@ -83,6 +85,7 @@ public class GotoLoading : MonoBehaviour
     {
         if (other.CompareTag("Player") && !_isGoto)
         {
+            _helper.CheckPlayer();
             SoundManager.Instance.PlaySoundEffect("Btn_Loading");
         }
     }
@@ -98,6 +101,7 @@ public class GotoLoading : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            _helper.CheckPlayer();
             isLoad = false;
             SoundManager.Instance.StopSoundEffect("Btn_Loading");
         }

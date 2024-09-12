@@ -20,8 +20,8 @@ TagManager:
   - GameStartUI
   - GameExitUI
   - Invisible
-  - InvisibleObject
   - Cinemachine
+  - IntroUI
   layers:
   - Default
   - TransparentFX
@@ -38,20 +38,20 @@ TagManager:
   - NonStackItemLayer
   - 
   - 
-  - 
+  - Impassable
   - 
   - attackable
   - diggable
   - 
-  - Sheep
+  - WaterBox
   - Resource
-  - 
+  - ShopItem
   - Rail
-  - Postprocessing
-  - 
+  - Box
+  - WorkBench
   - RenderObstacle
   - RenderAbove
-  - 
+  - DynamiteTrain
   - Empty
   - Block
   - BaseBlock

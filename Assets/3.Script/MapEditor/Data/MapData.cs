@@ -9,8 +9,12 @@ public class MapData
     public int mapId;
     public MyArr<int>[] mapData;
 
+    public Vector2Int[] creaturePos = new Vector2Int[4];
+
     public MapData(string mapDataName, int mapId, MyArr<int>[] mapData)
     {
+        this.creaturePos = new Vector2Int[4];
+
         this.mapDataName = mapDataName;
         this.mapId = mapId;
         this.mapData = mapData;

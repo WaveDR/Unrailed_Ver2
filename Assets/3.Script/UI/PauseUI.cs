@@ -23,11 +23,13 @@ public class PauseUI : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
+    PlayerController player;
     private bool _isEscape;
     private bool _isAudioSetting;
 
     private void Awake()
     {
+        player = FindObjectOfType<PlayerController>();
         setPauseObj.SetActive(false);
         blurPost.SetActive(false);
         defaultUI.SetActive(true);
@@ -93,7 +95,10 @@ public class PauseUI : MonoBehaviour
     public void Respawn()
     {
         //리스폰 나중에 민경씨 완성하면 개발
+        _isEscape = false;
         Time.timeScale = 1;
+        player.Respawn();
+        setPauseObj.SetActive(false);
     }
     public void ExitGame()
     {

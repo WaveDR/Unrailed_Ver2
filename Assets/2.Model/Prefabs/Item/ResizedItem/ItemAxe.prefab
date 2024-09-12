@@ -352,6 +352,8 @@ GameObject:
   - component: {fileID: 2168529395610539712}
   - component: {fileID: 8876452457701619646}
   - component: {fileID: 3762136941537901233}
+  - component: {fileID: 2071822134213571282}
+  - component: {fileID: 1389808509993244543}
   m_Layer: 12
   m_Name: ItemAxe
   m_TagString: Invisible
@@ -400,11 +402,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca2dcde514f144c88866bac8ad366a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _equipPart: 0
   stackInterval: 0.15
   itemType: 4
   blockLayer:
     serializedVersion: 2
     m_Bits: 1073741824
+  equipment: {fileID: 0}
 --- !u!114 &8876452457701619646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,6 +435,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b137f07870e151409e9d4fec84111d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2071822134213571282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5844127213111809277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831ac8066088a348af1d3371650a6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlight: 0
+  _brightAmount: 50
+--- !u!114 &1389808509993244543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5844127213111809277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0c6ed2abea96c4a8d6ae15051610e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEmpty: 0
+  invisibleType: 4
 --- !u!1 &8277278062670763822
 GameObject:
   m_ObjectHideFlags: 0

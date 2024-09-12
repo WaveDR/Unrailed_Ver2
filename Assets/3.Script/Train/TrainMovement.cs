@@ -11,7 +11,7 @@ public class TrainMovement : MonoBehaviour
 
     public int trainNum;
    
-    public Queue<RailController> rails = new Queue<RailController>();
+    public LinkedList<RailController> rails = new LinkedList<RailController>();
     public List<RailController> listToQue = new List<RailController>();
     public Transform trainMesh;
     public int trainUpgradeLevel;
@@ -24,6 +24,7 @@ public class TrainMovement : MonoBehaviour
     public bool isGoal;
     public bool isBurn;
     public bool isReady;
+    public bool isTrainOver;
     protected bool _isPlay;
 
     //게임오버
@@ -33,9 +34,10 @@ public class TrainMovement : MonoBehaviour
     public float _trainRotateSpeed;
 
     public float goalSpeed = 6f;
+    public float overSpeed = 0.1f;
     public float _trainMoveSpeed;
 
-    [SerializeField] private GameObject warningIcon;
+    [SerializeField] protected GameObject warningIcon;
     public Animator overText;
     private InGameScene manager;
 
@@ -46,22 +48,32 @@ public class TrainMovement : MonoBehaviour
         if (trainType != TrainType.Spare)
         {
             trainMesh = transform.GetChild(0).GetComponent<Transform>();
-            fireEffect = GetComponentInChildren<ParticleSystem>();
             destroyParticle.SetActive(false);
             trainMesh.gameObject.SetActive(true);
             isReady = true;
             trainUpgradeLevel = 1;
+            fireEffect = GetComponentInChildren<ParticleSystem>();
 
-            if (trainType != TrainType.WorkBench || trainType != TrainType.StationDir || trainType != TrainType.Dynamite)
+            // 조건이 잘못된듯 나침반, 다이너마이트, spare에는 2번째 자식이 없음
+            // if (trainType != TrainType.StationDir && trainType != TrainType.Dynamite) 
+            if (trainType != TrainType.StationDir && trainType != TrainType.Dynamite && trainType != TrainType.Spare)
             {
                 warningIcon = transform.GetChild(2).gameObject;
                 warningIcon.SetActive(false);
             }
         }
+        if (trainType != TrainType.StationDir || trainType != TrainType.Dynamite)
+        {
+            fireEffect = GetComponentInChildren<ParticleSystem>();
+        }
+
+
 
         cameraTarget = GameObject.FindGameObjectWithTag("Cinemachine").GetComponentsInChildren<Cinemachine.CinemachineVirtualCamera>();
         overText = GameObject.FindGameObjectWithTag("Cinemachine").GetComponent<Animator>();
         manager = FindObjectOfType<InGameScene>();
+        overSpeed = 1f;
+
         if (trainType == TrainType.Engine)
         {
             cameraTarget[0].Follow = transform;
@@ -83,6 +95,11 @@ public class TrainMovement : MonoBehaviour
                 _trainMoveSpeed = goalSpeed;
                 _trainRotateSpeed = goalSpeed;
             }
+            else if (isTrainOver)
+            {
+                _trainMoveSpeed = overSpeed;
+                _trainRotateSpeed = overSpeed;
+            }
             else
             {
                 _trainMoveSpeed = trainSpeed;
@@ -98,12 +115,12 @@ public class TrainMovement : MonoBehaviour
         if (rails.Count != 0)
         {
             RotateTrain();
-            transform.position = Vector3.MoveTowards(transform.position, rails.Peek().transform.position, _trainMoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, rails.First().transform.position, _trainMoveSpeed * Time.deltaTime);
 
 
-            if (transform.position == rails.Peek().transform.position)
+            if (transform.position == rails.First().transform.position)
             {
-                rails.Dequeue();
+                rails.RemoveFirst();
             }
 
             // 큐에 들어온 레일 위치로 이동
@@ -126,6 +143,8 @@ public class TrainMovement : MonoBehaviour
                     {
                         isReady = true;
                         // 역 도착하기
+                        FindObjectOfType<InGameScene>().engine = gameObject.GetComponent<TrainEngine>();
+
                         FindObjectOfType<InGameScene>().ArriveStation();
 
                         // ShopManager.Instance.ShopOn();
@@ -158,20 +177,23 @@ public class TrainMovement : MonoBehaviour
     }
     public virtual void TrainUpgrade()
     {
+        destroyParticle.SetActive(false);
         destroyParticle.SetActive(true);
-        //destroyParticle.SetActive(false);
         //상속해서 올리기
     }
     public void TrainOver()
     {
+        SoundManager.Instance.StopAllSound();
+
         if (trainType != TrainType.Spare && !isOver)
         {
+            ResourceTracker.Instance.gameObject.SetActive(false);
+             isOver = true;
             StopCoroutine(Warning());
             SoundManager.Instance.PlaySoundEffect("Train_Broken");
             trainMesh.gameObject.SetActive(false);
             destroyParticle.SetActive(false);
             destroyParticle.SetActive(true);
-            isOver = true;
         }
         if(trainType == TrainType.Spare)
         {
@@ -184,7 +206,18 @@ public class TrainMovement : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         overText.SetBool("GameOver", true);
         yield return new WaitForSeconds(1.5f);
-        manager._loadingSceneUI.SetActive(true);
+        manager.backToLobbyUI.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("IntroScene");
+    }
+
+    public IEnumerator ClearAnim()
+    {
+        CameraSwitch(4);
+        yield return new WaitForSeconds(2f);
+        overText.SetBool("GameClear", true);
+        yield return new WaitForSeconds(5f);
+        manager.backToLobbyUI.SetActive(true);
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("IntroScene");
     }
@@ -193,7 +226,7 @@ public class TrainMovement : MonoBehaviour
     {
         if(rails != null)
         {
-            Vector3 dir = rails.Peek().transform.position - transform.position;
+            Vector3 dir = rails.First().transform.position - transform.position;
             if(trainMesh != null)
             trainMesh.transform.rotation = Quaternion.Lerp(trainMesh.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _trainRotateSpeed);
         }
@@ -202,16 +235,22 @@ public class TrainMovement : MonoBehaviour
     {
         if (trainType != TrainType.Dynamite || trainType != TrainType.StationDir)
             //큐에 추가
-            rails.Enqueue(gameObject);
+            rails.AddLast(gameObject);
+    }
+    public void DequeueRailPos(RailController gameObject)
+    {
+        if (trainType != TrainType.Dynamite || trainType != TrainType.StationDir)
+            //큐에 추가
+            rails.RemoveLast();
     }
 
     public IEnumerator Warning()
     {
         _isPlay = true;
         warningIcon.SetActive(true);
+    
         yield return new WaitForSeconds(1.5f);
         warningIcon.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
         _isPlay = false;
     }
 }
